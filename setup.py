@@ -8,7 +8,7 @@ setup(
     description='A Function to convert a number into words in Hebrew',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
-    url='https://github.com/azoulaynoam',
+    url='https://github.com/azoulaynoam/num2heb',
     packages=find_packages(),
     classifiers=[
         'Programming Language :: Python :: 3',
