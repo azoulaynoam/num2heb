@@ -30,7 +30,7 @@ print(result)  # Output: "מאה עשרים ושלושה"
 ### JavaScript
 
 ```javascript
-const { numberToWords } = require("num2heb");
+const numberToWords = require("num2heb");
 
 const result = numberToWords(123);
 console.log(result); // Output: "מאה עשרים ושלושה"
@@ -39,7 +39,7 @@ console.log(result); // Output: "מאה עשרים ושלושה"
 ### TypeScript
 
 ```typescript
-import { numberToWords } from "num2heb";
+import numberToWords from "num2heb";
 
 const result: string = numberToWords(123);
 console.log(result); // Output: "מאה עשרים ושלושה"
