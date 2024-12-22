@@ -78,9 +78,9 @@ function numberToWords(num) {
             if (scale > 0 && part > 0) {
                 text = text + " " + bigNumbers[scale];
             }
-            if (i > 0) {
-                text = "ו" + text;
-            }
+            // if (i > 0) {
+            //     text = "ו" + text;
+            // }
             result.push(text);
         }
         return result;
@@ -88,12 +88,14 @@ function numberToWords(num) {
 
     const parts = chunkNumber(num);
     const words = handleSpecialCases(parts);
-    let result = words.join(" ").trim();
 
-    result = result.replace("אחד מיליון", "מיליון");
-    result = result.replace("אחד אלף", "אלף");
-    result = result.replace("שניים אלף", "אלפיים");
-    result = result.replace("שתיים אלף", "אלפיים");
+    for (let i = 0; i < words.length - 1; i++) {
+        if (words[i] == "אחד מיליון") words[i] = "מיליון";
+        if (words[i] == "אחד אלף") words[i] = "אלף";
+        if (words[i] == "שניים אלף") words[i] = "אלפיים";
+    }
+
+    let result = words.join(" ").trim();
 
     return result;
 }
