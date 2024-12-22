@@ -84,6 +84,5 @@ def number_to_words(num):
     result = result.replace("אחד מיליון", "מיליון")
     result = result.replace("אחד אלף", "אלף")
     result = result.replace("שניים אלף", "אלפיים")
-    result = result.replace("שתיים אלף", "אלפיים")
 
     return result

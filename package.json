@@ -1,0 +1,25 @@
+{
+  "name": "num2heb",
+  "version": "0.1.0",
+  "description": "A function to convert a number into words in Hebrew",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/azoulaynoam/num2heb.git"
+  },
+  "keywords": [
+    "number",
+    "convert",
+    "hebrew",
+    "words"
+  ],
+  "author": "Noam Azoulay",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/azoulaynoam/num2heb/issues"
+  },
+  "homepage": "https://github.com/azoulaynoam/num2heb#readme"
+}

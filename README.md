@@ -1,26 +1,48 @@
-# README.md
+# num2heb
 
-# My PyPI Package
-
-A Python function for converting a number to hebrew words.
+Convert numbers to Hebrew words in Python and JavaScript.
 
 ## Installation
 
-You can install the package using pip:
+### Python
 
-```
+```bash
 pip install num2heb
+```
+
+### JavaScript/TypeScript
+
+```bash
+npm install num2heb
 ```
 
 ## Usage
 
-Here is a simple example of how to use the package:
+### Python
 
 ```python
 from num2heb import number_to_words
 
 result = number_to_words(123)
 print(result)  # Output: "מאה עשרים ושלושה"
+```
+
+### JavaScript
+
+```javascript
+const { numberToWords } = require("num2heb");
+
+const result = numberToWords(123);
+console.log(result); // Output: "מאה עשרים ושלושה"
+```
+
+### TypeScript
+
+```typescript
+import { numberToWords } from "num2heb";
+
+const result: string = numberToWords(123);
+console.log(result); // Output: "מאה עשרים ושלושה"
 ```
 
 ## Contributing
