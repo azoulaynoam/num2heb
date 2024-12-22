@@ -1,0 +1,8 @@
+README.md
+setup.cfg
+setup.py
+num2heb/__init__.py
+numbers2hebrew.egg-info/PKG-INFO
+numbers2hebrew.egg-info/SOURCES.txt
+numbers2hebrew.egg-info/dependency_links.txt
+numbers2hebrew.egg-info/top_level.txt
