@@ -1,6 +1,6 @@
 {
   "name": "num2heb",
-  "version": "0.1.5",
+  "version": "0.1.11",
   "description": "A function to convert a number into words in Hebrew",
   "main": "dist/index.js",
   "scripts": {

@@ -80,35 +80,20 @@ function numberToWords(num: number): string {
 
   function chunkToWords(chunk: number): string {
     const words: string[] = [];
-    let addVav = false;
     if (chunk >= 100) {
       words.push(hundreds[Math.floor(chunk / 100)]);
       chunk %= 100;
-      addVav = true;
     }
     if (chunk >= 10 && chunk < 20) {
-      let t = teens[chunk - 10];
-      if (addVav) {
-        t = "ו" + t;
-        addVav = false;
-      }
-      words.push(t);
+      words.push(teens[chunk - 10]);
     } else {
       if (chunk >= 20) {
-        let t = tens[Math.floor(chunk / 10)];
-        if (addVav && chunk % 10 === 0) {
-          t = "ו" + t;
-          addVav = false;
-        } else {
-          addVav = true;
-        }
-        words.push(t);
+        words.push(tens[Math.floor(chunk / 10)]);
         chunk %= 10;
       }
       if (chunk > 0) {
-        if (addVav) {
+        if (words.length > 0) {
           words.push("ו" + units[chunk]);
-          addVav = false;
         } else {
           words.push(units[chunk]);
         }
@@ -134,9 +119,9 @@ function numberToWords(num: number): string {
       if (scale > 0 && part > 0) {
         text = text + " " + bigNumbers[scale];
       }
-      // if (i > 0) {
-      //   text = "ו" + text;
-      // }
+      if (i + 1 === parts.length && parts.length > 1) {
+        text = "ו" + text;
+      }
       result.push(text);
     }
     return result;
@@ -145,15 +130,26 @@ function numberToWords(num: number): string {
   const parts = chunkNumber(num);
   const words = handleSpecialCases(parts);
 
-  for (let i = 0; i < words.length - 1; i++) {
-    if (words[i] == "אחד מיליון") words[i] = "מיליון";
-    if (words[i] == "אחד אלף") words[i] = "אלף";
-    if (words[i] == "שניים אלף") words[i] = "אלפיים";
+  const specialCases: Record<string, string> = {
+    "אחד מיליון": "מיליון",
+    "אחד אלף": "אלף",
+    "שניים אלף": "אלפיים",
+    "שלושה אלף": "שלושת אלפים",
+    "ארבעה אלף": "ארבעת אלפים",
+    "חמישה אלף": "חמשת אלפים",
+    "שישה אלף": "ששת אלפים",
+    "שבעה אלף": "שבעת אלפים",
+    "שמונה אלף": "שמונת אלפים",
+    "תשעה אלף": "תשעת אלפים",
+  };
+
+  for (let i = 0; i < words.length; i++) {
+    if (specialCases[words[i]]) {
+      words[i] = specialCases[words[i]];
+    }
   }
 
-  let result = words.join(" ").trim();
-
-  return result;
+  return words.join(" ").trim();
 }
 
 export default numberToWords;
