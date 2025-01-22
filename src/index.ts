@@ -141,6 +141,7 @@ function numberToWords(num: number): string {
     "שבעה אלף": "שבעת אלפים",
     "שמונה אלף": "שמונת אלפים",
     "תשעה אלף": "תשעת אלפים",
+    "שניים מליון": "שני מיליון",
   };
 
   for (let i = 0; i < words.length; i++) {

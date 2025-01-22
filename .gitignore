@@ -1,3 +1,4 @@
+.env
 dist/
 build/
 num2heb.egg-info/
