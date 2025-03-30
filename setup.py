@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='num2heb',
-    version='0.1.13',
+    version='0.1.14',
     author='Noam Azoulay',
     author_email='noam@na-systems.com',
     description='A Function to convert a number into words in Hebrew',

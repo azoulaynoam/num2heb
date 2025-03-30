@@ -29,7 +29,7 @@ function numberToWords(num: number): string {
   ];
   const feminineBigUnits = [
     "",
-    "",
+    "אחת",
     "שתי",
     "שלושת",
     "ארבעת",
@@ -41,7 +41,7 @@ function numberToWords(num: number): string {
   ];
   const bigUnits = [
     "",
-    "",
+    "אחד",
     "שני",
     "שלוש",
     "ארבע",
@@ -52,7 +52,7 @@ function numberToWords(num: number): string {
     "תשע",
   ];
   const feminineTeens = [
-    "עשר",
+    "עשרת",
     "אחת עשרה",
     "שתיים עשרה",
     "שלוש עשרה",
@@ -99,19 +99,8 @@ function numberToWords(num: number): string {
     "שמונה מאות",
     "תשע מאות",
   ];
-  const bigNumbers = [
-    "",
-    "אלף",
-    "מיליון",
-    "מיליארד",
-    "טריליון",
-    "קוואדריליון",
-    "קוונטיליון",
-    "סקסטיליון",
-    "ספטיליון",
-    "אוקטיליון",
-    "נוניליון",
-  ];
+  const bigNumbers = ["", "אלף", "מיליון", "מיליארד", "טריליון"];
+  const bigNumbersMany = ["", "אלפים"];
 
   if (num === 0) {
     return "אפס";
@@ -134,7 +123,7 @@ function numberToWords(num: number): string {
     const words: string[] = [];
     const su = feminine ? feminineUnits : units;
     const bgu = feminine ? feminineBigUnits : bigUnits;
-    const unts = bigNumbers ? bgu : su;
+    const unts = bigNumbers && chunk < 10 ? bgu : su;
     const tns = feminine ? feminineTeens : teens;
     let addVe = false;
 
@@ -151,7 +140,8 @@ function numberToWords(num: number): string {
       words.push(t);
     } else {
       if (chunk >= 20) {
-        words.push(tens[Math.floor(chunk / 10)]);
+        let t = tens[Math.floor(chunk / 10)];
+        words.push(t);
         chunk %= 10;
       }
       if (chunk > 0) {
@@ -168,6 +158,16 @@ function numberToWords(num: number): string {
 
   function handleSpecialCases(parts: number[]): string[] {
     const result: string[] = [];
+    const cleanParts: number[] = [];
+
+    // Create clean parts array (remove trailing zeros)
+    for (let part of [...parts].reverse()) {
+      if (part === 0 && cleanParts.length === 0) {
+        continue;
+      }
+      cleanParts.push(part);
+    }
+
     for (let i = 0; i < parts.length; i++) {
       let text = "";
       if (parts[i] === 0 && i > 0) {
@@ -175,16 +175,18 @@ function numberToWords(num: number): string {
       }
       const scale = parts.length - i - 1;
       if (scale === 1 && parts[i] === 1) {
-        text = bigNumbers[scale];
+        text = bigNumbers[scale]; // "אלף"
       } else {
-        if (scale > 1) {
-          text = chunkToWords(parts[i], true);
-        } else {
-          text = chunkToWords(parts[i]);
+        if (!(cleanParts.length === 1 && parts[i] === 1 && parts.length > 1)) {
+          text = chunkToWords(parts[i], scale > 0, scale === 1);
         }
-      }
-      if (scale > 0 && parts[i] > 0) {
-        text += " " + bigNumbers[scale];
+        if (scale > 0 && parts[i] > 0) {
+          if (scale === 1 && parts.length === 2 && parts[i] <= 10) {
+            text += " " + bigNumbersMany[scale];
+          } else {
+            text += " " + bigNumbers[scale];
+          }
+        }
       }
       if (
         i + 1 ===
@@ -204,7 +206,7 @@ function numberToWords(num: number): string {
   let words = handleSpecialCases(parts);
 
   const specialCases: { [key: string]: string } = {
-    "שניים אלף": "אלפיים",
+    "שתי אלפים": "אלפיים",
   };
 
   words = words.map((word) => specialCases[word] || word);

@@ -5,16 +5,16 @@ def number_to_words(num):
     # Define the number components
     feminine_units = ["", "אחת", "שתיים", "שלוש", "ארבע", "חמש", "שש", "שבע", "שמונה", "תשע"]
     units = ["", "אחד", "שניים", "שלושה", "ארבעה", "חמישה", "שישה", "שבעה", "שמונה", "תשעה"]
-    feminine_big_units = ["", "", "שתי", "שלושת", "ארבעת", "חמשת", "ששת", "שבעת", "שמונת", "תשעת"]
-    big_units = ["", "", "שני", "שלוש", "ארבע", "חמש", "שש", "שבע", "שמונה", "תשע"]
+    feminine_big_units = ["", "אחת", "שתי", "שלושת", "ארבעת", "חמשת", "ששת", "שבעת", "שמונת", "תשעת"]
+    big_units = ["", "אחד", "שני", "שלוש", "ארבע", "חמש", "שש", "שבע", "שמונה", "תשע"]
     
-    feminine_teens = ["עשר", "אחת עשרה", "שתיים עשרה", "שלוש עשרה", "ארבע עשרה", "חמש עשרה", "שש עשרה", "שבע עשרה", "שמונה עשרה", "תשע עשרה"]
+    feminine_teens = ["עשרת", "אחת עשרה", "שתיים עשרה", "שלוש עשרה", "ארבע עשרה", "חמש עשרה", "שש עשרה", "שבע עשרה", "שמונה עשרה", "תשע עשרה"]
     teens = ["עשרה", "אחד עשר", "שניים עשר", "שלושה עשר", "ארבעה עשר", "חמישה עשר", "שישה עשר", "שבעה עשר", "שמונה עשר", "תשעה עשר"]
     
     tens = ["", "", "עשרים", "שלושים", "ארבעים", "חמישים", "שישים", "שבעים", "שמונים", "תשעים"]
     hundreds = ["", "מאה", "מאתיים", "שלוש מאות", "ארבע מאות", "חמש מאות", "שש מאות", "שבע מאות", "שמונה מאות", "תשע מאות"]
-    big_numbers = ["", "אלף", "מיליון", "מיליארד", "טריליון", "קוואדריליון", "קוונטיליון", "סקסטיליון", "ספטיליון", "אוקטיליון", "נוניליון"]
-
+    big_numbers = ["", "אלף", "מיליון", "מיליארד", "טריליון"]
+    big_numbers_many = ["", "אלפים"]
     # Handle zero
     if num == 0:
         return "אפס"
@@ -31,7 +31,7 @@ def number_to_words(num):
         words = []
         su = feminine_units if feminine else units
         bgu = feminine_big_units if feminine else big_units
-        unts = bgu if big_numbers else su
+        unts = bgu if big_numbers and chunk < 10 else su
         tns = feminine_teens if feminine else teens
         add_ve = False
         if chunk >= 100:
@@ -59,7 +59,11 @@ def number_to_words(num):
     # Handle "and" for special cases
     def handle_special_cases(parts):
         result = []
-        add_ve = False
+        clean_parts = []
+        for part in reversed(parts):
+            if part == 0 and len(clean_parts) == 0:
+                continue
+            clean_parts.append(part)
         for i, part in enumerate(parts):
             text = ''
             if part == 0 and i > 0:
@@ -68,12 +72,13 @@ def number_to_words(num):
             if scale == 1 and part == 1:
                 text = big_numbers[scale]  # "מיליון" and "אלף"
             else:
-                if scale > 1:
-                    text = chunk_to_words(part, big_numbers=True)
-                else:
-                    text = chunk_to_words(part)
-            if scale > 0 and part > 0:
-                text = text + " " + big_numbers[scale]
+                if not (len(clean_parts) == 1 and part == 1 and len(parts) > 1):
+                    text = chunk_to_words(part, big_numbers=(scale > 0), feminine=(scale == 1))
+                if scale > 0 and part > 0:
+                    if scale == 1 and len(parts) == 2 and part <= 10:
+                        text = text + " " + big_numbers_many[scale]
+                    else:
+                        text = text + " " + big_numbers[scale]
             if i + 1 == (len(parts) - 1 if (len(parts) != 2 and parts[len(parts) - 1] == 0) else len(parts)) and len(parts) > 1:
                 text = "ו" + text
             result.append(text)
@@ -84,7 +89,7 @@ def number_to_words(num):
     words = handle_special_cases(parts)
     
     special_cases = {
-        "שניים אלף": "אלפיים",
+        "שתי אלפים": "אלפיים",
     }
     
     for i, word in enumerate(words):
